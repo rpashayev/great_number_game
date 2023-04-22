@@ -16,21 +16,30 @@
         
         <div class="col-sm-6 mx-auto">
             {% if 'guess' in session: %}
-                {% if session['guess'] > session['num']: %}
-                    <div class = "card bg-danger">
-                        <h2> Too high </h2>
-                    </div>
-                {% elif session['guess'] < session['num']: %}
-                    <div class = "card bg-danger">
-                        <h2> Too low </h2>
-                    </div>
-                {% else: %}
-                    <div class="card bg-success">
-                        <h2>That's right!</h2>
-                        <form action="/reset" method="post">
-                            <input type="submit" value="Reset" name="reset_btn" class="btn btn-primary mb-2">
-                        </form>
-                    </div>
+            {% if session['try'] >= 5: %}
+                <div class="card bg-primary">
+                    <h2>You Lose!</h2>
+                    <form action="/reset" method="post">
+                        <input type="submit" value="Reset" name="reset_btn" class="btn btn-warning mb-2">
+                    </form>
+                </div>
+            {% else %}
+                    {% if session['guess'] > session['num']: %}
+                        <div class = "card bg-danger">
+                            <h2> Too high </h2>
+                        </div>
+                    {% elif session['guess'] < session['num']: %}
+                        <div class = "card bg-danger">
+                            <h2> Too low </h2>
+                        </div>
+                    {% else: %}
+                        <div class="card bg-success">
+                            <h2>That's right!</h2>
+                            <form action="/reset" method="post">
+                                <input type="submit" value="Reset" name="reset_btn" class="btn btn-primary mb-2">
+                            </form>
+                        </div>
+                    {% endif %}
                 {% endif %}
             {% endif %}
             <form action="/guess" method="post" class="bg-dark rounded text-warning text-center">
@@ -39,6 +48,7 @@
                     <input type="text" name="guess_number" class="form-control col-sm-8 mt-2 mx-auto text-right">
                 </div>
                 <div>
+                    <p>Number of guesses made: {{ session['try'] }}</p>
                     <input type="submit" value="Guess" name="guess_btn" class="btn btn-warning my-2">
                 </div>
             </form>

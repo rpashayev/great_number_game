@@ -8,11 +8,14 @@ app.secret_key = '123456'
 def start():
     if 'num' not in session:
         session['num'] =  randint(1, 100)
+    if 'try' not in session:
+        session['try'] = 0
     return render_template('game.html')
 
 @app.route('/guess', methods = ['POST'])
 def check_number():
     session['guess'] = int(request.form['guess_number'])
+    session['try'] += 1
     print(session)
     return redirect('/')
 
